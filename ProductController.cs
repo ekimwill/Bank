@@ -1,4 +1,4 @@
-﻿using Spectre.Console;
+using Spectre.Console;
 
 namespace Bank;
 
@@ -13,18 +13,47 @@ internal class ProductController
         db.SaveChanges();
     }
 
-    internal static void Deposit()
+    internal static void Deposit(Product product, double amount)
     {
-        throw new NotImplementedException();
+
+        
+       
+        using var db = new ProductContext();
+        var id = product.Id;
+        var account = db.Products.SingleOrDefault(p => p.Id == id);
+        account.Balance += amount;
+        db.SaveChanges();
+    }
+    internal static void withdraw(Product product, double amount)
+    {
+
+        var id = product.Id;
+        using var db = new ProductContext();
+        var account = db.Products.SingleOrDefault(p => p.Id == id);
+        account.Balance -= amount;
+        db.SaveChanges();
     }
 
-    internal static void Quit()
+    internal static List<Product> GetProduct()
     {
-        throw new NotImplementedException();
+        using var db = new ProductContext();
+        var products = db.Products.ToList();
+        return products;
     }
 
-    internal static void withdraw()
+
+    internal static Product GetProductById(int id)
     {
-        throw new NotImplementedException();
+        using var db = new ProductContext();
+        var product = db.Products.SingleOrDefault(x=>x.Id== id);
+        return product;
+    }
+
+    internal static List<Product> SeeAllAccounts()
+    {
+        var db=new ProductContext();
+        var products=db.Products.ToList();
+        return products;
+        
     }
 }
