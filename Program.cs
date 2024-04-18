@@ -1,8 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
 using Bank;
 using Spectre.Console;
 
-Console.WriteLine("Hello, World!");
+
+
 
 var isrunning = true;
 
@@ -16,6 +16,7 @@ while (isrunning)
             MenuOPtion.CreateAccount,
             MenuOPtion.Deposit,
             MenuOPtion.withdraw,
+            MenuOPtion.SeeAllAccounts,
             MenuOPtion.Quit));
 
 
@@ -24,15 +25,36 @@ while (isrunning)
     {
         case MenuOPtion.CreateAccount:
             ProductController.CreateAccount();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadLine();
+            Console.Clear();
             break;
         case MenuOPtion.Deposit:
-            ProductController.Deposit();
+            var product = ProductService.GetAccountOptionInput();
+            var amount = ProductService.GetAmount();
+            ProductController.Deposit(product, amount);
+            Console.WriteLine("Press any key to continue");
+            Console.ReadLine();
+            Console.Clear();
             break;
         case MenuOPtion.withdraw:
-            ProductController.withdraw();
+
+            product = ProductService.GetAccountOptionInput();
+            amount = ProductService.GetWithdraw();
+            ProductController.withdraw(product, amount);
+            Console.WriteLine("Press any key to continue");
+            Console.ReadLine();
+            Console.Clear();
+            break;
+        case MenuOPtion.SeeAllAccounts:
+            var products = ProductController.SeeAllAccounts();
+            ProductService.SeeAllAccounts(products);
+            Console.WriteLine("Press any key to continue");
+            Console.ReadLine();
+            Console.Clear();
             break;
         case MenuOPtion.Quit:
-            ProductController.Quit();
+            isrunning = false;
             break;
     }
 }
@@ -50,5 +72,6 @@ enum MenuOPtion
     CreateAccount,
     Deposit,
     withdraw,
+    SeeAllAccounts,
     Quit
 }
