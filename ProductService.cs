@@ -11,35 +11,46 @@ internal class ProductService
         var option = AnsiConsole.Prompt(new SelectionPrompt<string>()
             .Title("choose account")
             .AddChoices(productsArray));
-        var id=products.Single(x => x.Name == option).Id;
-        var product=ProductController.GetProductById(id);
+        var id = products.Single(x => x.Name == option).Id;
+        var product = ProductController.GetProductById(id);
         return product;
+    }
+
+    static internal void CreateProduct()
+    {
+        var name = AnsiConsole.Ask<string>("Name: ");
+        var I_Deposit = AnsiConsole.Ask<double>("Initial Deposit: ");
+        ProductController.CreateAccount(name, I_Deposit);
     }
 
     static internal void DeleteProduct()
     {
-        var product= GetAccountOptionInput();
+        var product = GetAccountOptionInput();
         ProductController.DeleteProduct(product);
+    }
+    internal static void Deposit()
+    {
+        var product = GetAccountOptionInput();
+        var Deposit = AnsiConsole.Ask<double>("Deposit: ");
+        ProductController.Deposit(product, Deposit);
+
+    }
+    internal static void Withdraw()
+    {
+        var product = GetAccountOptionInput();
+        var Withdraw = AnsiConsole.Ask<double>("Withdaw Ammount: ");
+        ProductController.Deposit(product, Withdraw);
     }
 
 
-
-    static internal void SeeAllAccounts(List<Product> products)
+    static internal void SeeAllAccounts()
     {
+        var products = ProductController.GetProduct();
         foreach (var product in products)
         {
             Console.WriteLine($"Id: P{product.Id}, Name: {product.Name}, Balance:{product.Balance}");
         }
-        
-    }
-    internal static double GetAmount()
-    {
-        var Amount = AnsiConsole.Ask<double>("Deposit amount: ");
-        return Amount;
-    }
-    internal static double GetWithdraw()
-    {
-        var Amount = AnsiConsole.Ask<double>("Withdraw amount: ");
-        return Amount;
+
     }
 }
+   
