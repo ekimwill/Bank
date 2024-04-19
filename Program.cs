@@ -17,6 +17,7 @@ while (isrunning)
             MenuOPtion.Deposit,
             MenuOPtion.withdraw,
             MenuOPtion.SeeAllAccounts,
+            MenuOPtion.DeleteAccount,
             MenuOPtion.Quit));
 
 
@@ -25,6 +26,12 @@ while (isrunning)
     {
         case MenuOPtion.CreateAccount:
             ProductController.CreateAccount();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadLine();
+            Console.Clear();
+            break;
+        case MenuOPtion.DeleteAccount:
+            ProductService.DeleteProduct();
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
             Console.Clear();
@@ -73,5 +80,6 @@ enum MenuOPtion
     Deposit,
     withdraw,
     SeeAllAccounts,
+    DeleteAccount,
     Quit
 }
