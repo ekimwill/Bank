@@ -1,4 +1,4 @@
-﻿using Spectre.Console;
+using Spectre.Console;
 
 namespace Bank;
 
@@ -16,6 +16,11 @@ internal class ProductService
         return product;
     }
 
+    static internal void DeleteProduct()
+    {
+        var product= GetAccountOptionInput();
+        ProductController.DeleteProduct(product);
+    }
 
 
 
