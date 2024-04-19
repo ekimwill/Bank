@@ -13,6 +13,14 @@ internal class ProductController
         db.SaveChanges();
     }
 
+
+    internal static void DeleteProduct(Product product)
+    {
+        using var db = new ProductContext();
+        db.Remove(product);
+        db.SaveChanges();
+    }
+
     internal static void Deposit(Product product, double amount)
     {
 
