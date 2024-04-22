@@ -1,4 +1,4 @@
-﻿using Bank.Services;
+using Bank.Services;
 using Spectre.Console;
 using static Bank.Enums;
 
@@ -17,6 +17,7 @@ internal class UserInterface
                 new SelectionPrompt<MenuOPtion>()
                 .Title("This is Mikes bank")
                 .AddChoices(
+                    MenuOPtion.CreateCategory,
                     MenuOPtion.CreateAccount,
                     MenuOPtion.Deposit,
                     MenuOPtion.withdraw,
@@ -29,6 +30,12 @@ internal class UserInterface
 
             switch (options)
             {
+                case MenuOPtion.CreateCategory:
+                    CategoryServices.InsertCategory();
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadLine();
+                    Console.Clear();
+                    break;
                 case MenuOPtion.CreateAccount:
                     ProductService.CreateProduct();
                     Console.WriteLine("Press any key to continue");
