@@ -1,6 +1,8 @@
+using Bank.Controller;
+using Bank.Models;
 using Spectre.Console;
 
-namespace Bank;
+namespace Bank.Services;
 
 internal class ProductService
 {
@@ -11,16 +13,25 @@ internal class ProductService
         var option = AnsiConsole.Prompt(new SelectionPrompt<string>()
             .Title("choose account")
             .AddChoices(productsArray));
-        var id = products.Single(x => x.Name == option).Id;
+        var id = products.Single(x => x.Name == option).ProductId;
         var product = ProductController.GetProductById(id);
         return product;
     }
 
     static internal void CreateProduct()
     {
-        var name = AnsiConsole.Ask<string>("Name: ");
-        var I_Deposit = AnsiConsole.Ask<double>("Initial Deposit: ");
-        ProductController.CreateAccount(name, I_Deposit);
+        var product = new Product();
+        product.Name = AnsiConsole.Ask<string>("Name: ");
+        product.Balance = AnsiConsole.Ask<double>("Initial Deposit: ");
+        product.sex = AnsiConsole.Ask<string>("Sex: ");
+        var Categorys = CategoryController.GetCategory();
+        var CategoryArray = Categorys.Select(x => x.Name).ToArray();
+        var Category_name= AnsiConsole.Prompt(new SelectionPrompt<string>()
+            .Title("Choose Account type")
+            .AddChoices(CategoryArray));
+        product.CategoryId = Categorys.Single(x => x.Name == Category_name).CategoryId;
+
+        ProductController.CreateAccount(product);
     }
 
     static internal void DeleteProduct()
@@ -48,9 +59,16 @@ internal class ProductService
         var products = ProductController.GetProduct();
         foreach (var product in products)
         {
-            Console.WriteLine($"Id: P{product.Id}, Name: {product.Name}, Balance:{product.Balance}");
+            Console.WriteLine($"Id: P{product.ProductId}, Name: {product.Name}, Balance:{product.Balance}, Sex:{product.sex}");
         }
 
     }
+
+    internal static void EditName()
+    {
+        var product = GetAccountOptionInput();
+        product.Name = AnsiConsole.Ask<string>("New name: ");
+        ProductController.EditName(product);
+    }
 }
-   
+
