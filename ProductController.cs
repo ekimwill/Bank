@@ -1,14 +1,15 @@
+using Bank.Models;
 using Spectre.Console;
 
-namespace Bank;
+namespace Bank.Controller;
 
 internal class ProductController
 {
-    internal static void CreateAccount(string name,double I_Deposit)
+    internal static void CreateAccount(Product product)
     {
-        
+
         using var db = new ProductContext();
-        db.Add(new Product { Name = name,Balance= I_Deposit });
+        db.Add(product);
         db.SaveChanges();
     }
 
@@ -22,21 +23,16 @@ internal class ProductController
 
     internal static void Deposit(Product product, double amount)
     {
-
-        
-       
         using var db = new ProductContext();
-        var id = product.Id;
-        var account = db.Products.SingleOrDefault(p => p.Id == id);
-        account.Balance += amount;
+        product.Balance += amount;
+        db.Update(product);
         db.SaveChanges();
     }
-    internal static void withdraw(Product product, double amount)
+    internal static void Withdraw(Product product, double amount)
     {
-
-        var id = product.Id;
+        var id = product.ProductId;
         using var db = new ProductContext();
-        var account = db.Products.SingleOrDefault(p => p.Id == id);
+        var account = db.Products.SingleOrDefault(p => p.ProductId == id);
         account.Balance -= amount;
         db.SaveChanges();
     }
@@ -52,7 +48,14 @@ internal class ProductController
     internal static Product GetProductById(int id)
     {
         using var db = new ProductContext();
-        var product = db.Products.SingleOrDefault(x=>x.Id== id);
+        var product = db.Products.SingleOrDefault(x => x.ProductId == id);
         return product;
+    }
+
+    internal static void EditName(Product new_product)
+    {
+        using var db = new ProductContext();
+        db.Update(new_product);
+        db.SaveChanges();
     }
 }
